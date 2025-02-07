@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import ShopwareError from 'src/core/data/ShopwareError';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 
 const { Context } = Shopware;
@@ -191,7 +191,7 @@ describe('src/module/sw-order/component/sw-order-new-customer-modal', () => {
         expect(swDetailsTab.find('sw-icon-stub').exists()).toBe(false);
         expect(swBillingAddressTab.find('sw-icon-stub').exists()).toBe(false);
 
-        await Shopware.State.dispatch('error/addApiError', {
+        Shopware.Store.get('error').addApiError({
             expression: 'customer.1.email',
             error: new ShopwareError({
                 code: 'c1051bb4-d103-4f74-8988-acbcafc7fdc3',

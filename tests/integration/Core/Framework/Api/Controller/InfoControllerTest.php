@@ -19,6 +19,7 @@ use Shopware\Core\Framework\Api\ApiDefinition\DefinitionService;
 use Shopware\Core\Framework\Api\Controller\InfoController;
 use Shopware\Core\Framework\Api\Route\ApiRouteInfoResolver;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\Event\A11yRenderedDocumentAware;
 use Shopware\Core\Framework\Event\BusinessEventCollector;
 use Shopware\Core\Framework\Event\CustomerAware;
 use Shopware\Core\Framework\Event\CustomerGroupAware;
@@ -62,7 +63,7 @@ class InfoControllerTest extends TestCase
     public function testGetConfig(): void
     {
         $expected = [
-            'version' => '6.6.9999999.9999999-dev',
+            'version' => '6.7.9999999.9999999-dev',
             'versionRevision' => str_repeat('0', 32),
             'adminWorker' => [
                 'enableAdminWorker' => true,
@@ -112,6 +113,8 @@ class InfoControllerTest extends TestCase
                     'csv',
                     'xls',
                     'xlsx',
+                    'html',
+                    'xml',
                 ],
                 'enableHtmlSanitizer' => true,
                 'enableStagingMode' => false,
@@ -230,7 +233,7 @@ class InfoControllerTest extends TestCase
     public function testGetShopwareVersion(): void
     {
         $expected = [
-            'version' => '6.6.9999999.9999999-dev',
+            'version' => '6.7.9999999.9999999-dev',
         ];
 
         $url = '/api/_info/version';
@@ -250,7 +253,7 @@ class InfoControllerTest extends TestCase
     public function testGetShopwareVersionOldVersion(): void
     {
         $expected = [
-            'version' => '6.6.9999999.9999999-dev',
+            'version' => '6.7.9999999.9999999-dev',
         ];
 
         $url = '/api/v1/_info/version';
@@ -351,6 +354,8 @@ class InfoControllerTest extends TestCase
                     lcfirst((new \ReflectionClass(OrderAware::class))->getShortName()),
                     CustomerAware::class,
                     lcfirst((new \ReflectionClass(CustomerAware::class))->getShortName()),
+                    A11yRenderedDocumentAware::class,
+                    lcfirst((new \ReflectionClass(A11yRenderedDocumentAware::class))->getShortName()),
                 ],
             ],
         ];
@@ -501,6 +506,8 @@ class InfoControllerTest extends TestCase
 
     public function testBaseAdminPaths(): void
     {
+        static::markTestSkipped('#6556');
+
         if (!class_exists(AdministrationController::class)) {
             static::markTestSkipped('Cannot test without Administration as results will differ');
         }

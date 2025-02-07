@@ -24,7 +24,7 @@ type SlotConfigErrorObject = {
 
 /**
  * @private
- * @package buyers-experience
+ * @sw-package discovery
  */
 export default Shopware.Component.wrapComponentConfig({
     template,

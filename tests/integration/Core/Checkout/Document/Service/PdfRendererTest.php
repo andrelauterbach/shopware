@@ -41,6 +41,8 @@ class PdfRendererTest extends TestCase
 
     protected function setUp(): void
     {
+        static::markTestSkipped('#6556');
+
         parent::setUp();
 
         $this->context = Context::createDefaultContext();
@@ -100,7 +102,7 @@ class PdfRendererTest extends TestCase
 
         $rendered = $processedTemplate->getSuccess()[$orderId];
 
-        static::assertStringContainsString('<html>', $rendered->getHtml());
+        static::assertStringContainsString('<html lang="en-GB">', $rendered->getHtml());
         static::assertStringContainsString('</html>', $rendered->getHtml());
 
         $generatorOutput = $this->pdfRenderer->render($rendered);

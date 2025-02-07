@@ -3,7 +3,7 @@ import { LineItemType } from '../../order.types';
 import './sw-order-line-items-grid.scss';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 
 const { Utils } = Shopware;
@@ -20,7 +20,6 @@ export default {
         'repositoryFactory',
         'orderService',
         'acl',
-        'feature',
     ],
 
     emits: [
