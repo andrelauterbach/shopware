@@ -73,12 +73,10 @@ test('Customer should see unavailable filter disabled based on selected filter',
     });
 
     await test.step('Select filter by rating, verify that all filters are disabled', async () => {
-        
+
     });
 
 });
-
-
 
 // test('Should disable some filters if filtered by size', async ({ ShopCustomer }) => {
 
