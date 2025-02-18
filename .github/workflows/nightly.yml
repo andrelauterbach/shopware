@@ -129,6 +129,9 @@ jobs:
     if: github.repository == 'shopware/shopware'
     with:
       nightly: true
+  visual-tests:
+    uses: ./.github/workflows/visual-tests.yml
+    if: github.repository == 'shopware/shopware'
   php:
     uses: ./.github/workflows/php.yml
     secrets: inherit
