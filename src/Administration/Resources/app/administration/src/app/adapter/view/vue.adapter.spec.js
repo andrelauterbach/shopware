@@ -539,6 +539,17 @@ describe('ASYNC app/adapter/view/vue.adapter.js', () => {
                     return msg.includes('plugin is already installed');
                 },
             });
+
+            global.allowedErrors.push({
+                method: 'warn',
+                msgCheck: (msg) => {
+                    if (typeof msg !== 'string') {
+                        return false;
+                    }
+
+                    return msg.includes('plugin must either be a function');
+                },
+            });
         });
 
         beforeEach(async () => {
@@ -690,14 +701,12 @@ describe('ASYNC app/adapter/view/vue.adapter.js', () => {
                 'mt-colorpicker',
                 'mt-datepicker',
                 'mt-email-field',
-                'mt-external-link',
                 'mt-number-field',
                 'mt-password-field',
                 'mt-select',
                 'mt-switch',
                 'mt-text-field',
                 'mt-textarea',
-                'mt-url-field',
                 'mt-icon',
                 'mt-data-table',
                 'mt-pagination',

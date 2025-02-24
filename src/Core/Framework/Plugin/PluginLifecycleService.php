@@ -9,11 +9,11 @@ use Psr\Cache\CacheItemPoolInterface;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\DefinitionInstanceRegistry;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
-use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Migration\MigrationCollection;
 use Shopware\Core\Framework\Migration\MigrationCollectionLoader;
@@ -45,7 +45,6 @@ use Shopware\Core\Framework\Plugin\Requirement\Exception\RequirementStackExcepti
 use Shopware\Core\Framework\Plugin\Requirement\RequirementsValidator;
 use Shopware\Core\Framework\Plugin\Util\AssetService;
 use Shopware\Core\Framework\Plugin\Util\VersionSanitizer;
-use Shopware\Core\System\CustomEntity\CustomEntityLifecycleService;
 use Shopware\Core\System\CustomEntity\Schema\CustomEntityPersister;
 use Shopware\Core\System\CustomEntity\Schema\CustomEntitySchemaUpdater;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
@@ -86,9 +85,9 @@ class PluginLifecycleService
         private readonly SystemConfigService $systemConfigService,
         private readonly CustomEntityPersister $customEntityPersister,
         private readonly CustomEntitySchemaUpdater $customEntitySchemaUpdater,
-        private readonly CustomEntityLifecycleService $customEntityLifecycleService,
         private readonly PluginService $pluginService,
         private readonly VersionSanitizer $versionSanitizer,
+        private readonly DefinitionInstanceRegistry $definitionRegistry,
     ) {
     }
 
@@ -141,10 +140,6 @@ class PluginLifecycleService
             $this->systemConfigService->savePluginConfiguration($pluginBaseClass, true);
 
             $pluginBaseClass->install($installContext);
-
-            if (!Feature::isActive('v6.7.0.0')) {
-                $this->customEntityLifecycleService->updatePlugin($plugin->getId(), $plugin->getPath() ?? '');
-            }
 
             $this->runMigrations($installContext);
 
@@ -203,7 +198,7 @@ class PluginLifecycleService
             $this->assetInstaller->removeAssetsOfBundle($pluginBaseClassString);
         }
 
-        if (!$uninstallContext->keepUserData() && Feature::isActive('v6.7.0.0')) {
+        if (!$uninstallContext->keepUserData()) {
             // plugin->uninstall() will remove the tables etc of the plugin,
             // we drop the migrations before, so we can recover in case of errors by rerunning the migrations
             $pluginBaseClass->removeMigrations();
@@ -212,9 +207,6 @@ class PluginLifecycleService
         $pluginBaseClass->uninstall($uninstallContext);
 
         if (!$uninstallContext->keepUserData()) {
-            if (!Feature::isActive('v6.7.0.0')) {
-                $pluginBaseClass->removeMigrations();
-            }
             $this->systemConfigService->deletePluginConfiguration($pluginBaseClass);
         }
 
@@ -302,10 +294,6 @@ class PluginLifecycleService
             $this->assetInstaller->copyAssetsFromBundle($pluginBaseClassString);
         }
 
-        if (!Feature::isActive('v6.7.0.0')) {
-            $this->customEntityLifecycleService->updatePlugin($plugin->getId(), $plugin->getPath() ?? '');
-        }
-
         $this->runMigrations($updateContext);
 
         $updateVersion = $updateContext->getUpdatePluginVersion();
@@ -362,7 +350,7 @@ class PluginLifecycleService
 
         // only skip rebuild if plugin has overwritten rebuildContainer method and source is system source (CLI)
         if ($pluginBaseClass->rebuildContainer() || !$shopwareContext->getSource() instanceof SystemSource) {
-            $this->rebuildContainerWithNewPluginState($plugin);
+            $this->rebuildContainerWithNewPluginState($plugin, $pluginBaseClass->getNamespace());
         }
 
         $pluginBaseClass = $this->getPluginInstance($pluginBaseClassString);
@@ -449,7 +437,7 @@ class PluginLifecycleService
 
             // only skip rebuild if plugin has overwritten rebuildContainer method and source is system source (CLI)
             if ($pluginBaseClass->rebuildContainer() || !$shopwareContext->getSource() instanceof SystemSource) {
-                $this->rebuildContainerWithNewPluginState($plugin);
+                $this->rebuildContainerWithNewPluginState($plugin, $pluginBaseClass->getNamespace());
             }
 
             $this->updatePluginData(
@@ -596,7 +584,7 @@ class PluginLifecycleService
         $this->pluginRepo->update([$pluginData], $context);
     }
 
-    private function rebuildContainerWithNewPluginState(PluginEntity $plugin): void
+    private function rebuildContainerWithNewPluginState(PluginEntity $plugin, string $pluginNamespace): void
     {
         $kernel = $this->container->get('kernel');
 
@@ -612,6 +600,10 @@ class PluginLifecycleService
             if ($pluginData['baseClass'] === $plugin->getBaseClass()) {
                 $plugins[$i]['active'] = $plugin->getActive();
             }
+        }
+
+        if (!$plugin->getActive()) {
+            $this->clearEntityExtensions($pluginNamespace);
         }
 
         /*
@@ -631,6 +623,18 @@ class PluginLifecycleService
 
         $this->container = $newContainer;
         $this->eventDispatcher = $newContainer->get('event_dispatcher');
+    }
+
+    private function clearEntityExtensions(string $pluginNamespace): void
+    {
+        if ($pluginNamespace === '') {
+            return;
+        }
+
+        $definitions = $this->definitionRegistry->getDefinitions();
+        foreach ($definitions as $definition) {
+            $definition->removeExtensions($pluginNamespace);
+        }
     }
 
     private function getPluginInstance(string $pluginBaseClassString): Plugin

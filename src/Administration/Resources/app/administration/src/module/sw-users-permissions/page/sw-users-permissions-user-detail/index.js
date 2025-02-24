@@ -46,10 +46,6 @@ export default {
             mediaItem: null,
             newPassword: '',
             newPasswordConfirm: '',
-            /**
-             * @deprecated tag:v6.7.0 - Will be removed. Use `isEmailAlreadyInUse` instead
-             */
-            isEmailUsed: false,
             isEmailAlreadyInUse: false,
             isUsernameUsed: false,
             isIntegrationsLoading: false,
@@ -308,10 +304,6 @@ export default {
                     id: this.user.id,
                 })
                 .then(({ emailIsUnique }) => {
-                    /**
-                     * @deprecated tag:v6.7.0 - remove this.isEmailUsed assignment
-                     */
-                    this.isEmailUsed = !emailIsUnique;
                     this.isEmailAlreadyInUse = !emailIsUnique;
                 });
         },
@@ -409,8 +401,8 @@ export default {
                         const titleSaveError = this.$tc('global.default.error');
                         const messageSaveError = this.$tc(
                             'sw-users-permissions.users.user-detail.notification.saveError.message',
-                            0,
                             { name: this.fullName },
+                            0,
                         );
 
                         return this.userRepository
