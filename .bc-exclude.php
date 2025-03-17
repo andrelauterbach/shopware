@@ -71,5 +71,8 @@ return [
 
         // Incorrectly deprecated
         'The return type of Shopware\\\\Core\\\\Checkout\\\\Document\\\\DocumentException.* changed from self',
+
+        // Exclude the backwards-incompatible change for the new parameter
+        'ADDED: Parameter prefixMatch was added to Method __construct\(\) of class Shopware\\\\Elasticsearch\\\\Product\\\\SearchFieldConfig',
     ],
 ];
