@@ -291,12 +291,12 @@ class SalesChannelContext extends Struct
      */
     public function getLanguageIdChain(): array
     {
-        return $this->context->getLanguageIdChain();
+        return $this->languageInfo->chain;
     }
 
     public function getLanguageId(): string
     {
-        return $this->context->getLanguageId();
+        return $this->languageInfo->id;
     }
 
     public function getVersionId(): string
