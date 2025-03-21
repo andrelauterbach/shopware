@@ -186,12 +186,13 @@ class CategoryRouteTest extends TestCase
             \array_reverse($languageCodeChain),
         );
 
+        $languageInfo = Generator::createLanguageInfo(chain: $languageIdChain);
+
         return Generator::generateSalesChannelContext(new Context(
             new SalesChannelApiSource(Uuid::randomHex()),
             [],
             Defaults::CURRENCY,
-            $languageIdChain,
-        ));
+        ), languageInfo: $languageInfo);
     }
 
     /**
