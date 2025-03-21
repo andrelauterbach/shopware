@@ -1467,10 +1467,15 @@ class RecalculationServiceTest extends TestCase
     private function persistCart(Cart $cart, ?string $languageId = null): array
     {
         if ($languageId !== null) {
-            $context = $this->salesChannelContext->getContext();
-            $context->assign([
-                'languageIdChain' => array_merge([$languageId], $context->getLanguageIdChain()),
-            ]);
+            $oldLanguageInfo = $this->salesChannelContext->getLanguageInfo();
+            $languageInfo = Generator::createLanguageInfo(
+                $languageId,
+                $oldLanguageInfo->name,
+                array_merge([$languageId], $oldLanguageInfo->chain),
+                $oldLanguageInfo->localeId,
+                $oldLanguageInfo->localeCode,
+            );
+            $this->salesChannelContext->setLanguageInfo($languageInfo);
         }
         $orderId = static::getContainer()->get(OrderPersister::class)->persist($cart, $this->salesChannelContext);
 
