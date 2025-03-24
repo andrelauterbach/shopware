@@ -27,7 +27,6 @@ use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Pricing\CashRoundingConfig;
 use Shopware\Core\Framework\Log\Package;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\Country\Aggregate\CountryState\CountryStateEntity;
 use Shopware\Core\System\Country\CountryEntity;
 use Shopware\Core\System\Currency\CurrencyEntity;
@@ -58,6 +57,7 @@ class Generator extends TestCase
     final public const CUSTOMER_ADDRESS = '08f1594313494c3e9eb57bb53486fe61';
     final public const CUSTOMER = '42d58aa78cf14851968a786a66bab93a';
     final public const LANGUAGE_INFO_NAME = 'English';
+    final public const LANGUAGE_INFO_LOCALE_ID = '0195c74c6dc97287b95616bfe6aa5fbd';
     final public const LANGUAGE_INFO_LOCALE_CODE = 'en-GB';
 
     /**
@@ -285,7 +285,7 @@ class Generator extends TestCase
             $id ?? Defaults::LANGUAGE_SYSTEM,
             $name ?? self::LANGUAGE_INFO_NAME,
             $chain ?? [Defaults::LANGUAGE_SYSTEM],
-            $localeId ?? Uuid::randomHex(),
+            $localeId ?? self::LANGUAGE_INFO_LOCALE_ID,
             $localeCode ?? self::LANGUAGE_INFO_LOCALE_CODE,
         );
     }

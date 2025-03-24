@@ -177,11 +177,11 @@ class DummyContext extends SalesChannelContext
     }
 
     /**
-     * @param list<string> $chain
+     * @param non-empty-list<string> $chain
      */
     public function setLanguageChain(array $chain): self
     {
-        $this->context->assign(['languageIdChain' => $chain]);
+        $this->languageInfo = Generator::createLanguageInfo(chain: $chain);
 
         return $this;
     }
