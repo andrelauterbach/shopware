@@ -13,6 +13,8 @@ use Shopware\Core\Framework\Log\Package;
 final readonly class LanguageInfo
 {
     /**
+     * @internal
+     *
      * @param non-empty-list<string> $chain
      */
     public function __construct(
