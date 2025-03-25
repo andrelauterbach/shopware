@@ -28,5 +28,6 @@ return [
 
         // Exclude the backwards-incompatible change for the new parameter
         'ADDED: Parameter prefixMatch was added to Method __construct\(\) of class Shopware\\\\Elasticsearch\\\\Product\\\\SearchFieldConfig',
+        'Shopware\\\\Core\\\\System\\\\SalesChannel\\\\Context\\\\LanguageInfo#__construct\(\)',
     ],
 ];
