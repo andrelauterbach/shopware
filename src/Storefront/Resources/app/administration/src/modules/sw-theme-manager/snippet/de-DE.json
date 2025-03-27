@@ -1,4 +1,95 @@
 {
+  "sw-theme": {
+    "storefront": {
+      "default": {
+        "themeColors": {
+          "label": "#",
+          "default": {
+            "sw-color-brand-primary": {
+              "label": "###"
+            },
+            "sw-color-brand-secondary": {
+              "label": "###"
+            },
+            "sw-border-color": {
+              "label": "###"
+            },
+            "sw-background-color": {
+              "label": "###"
+            }
+          }
+        },
+        "statusColors": {
+          "label": "#",
+          "default": {
+            "sw-color-success": {
+              "label": "###"
+            },
+            "sw-color-danger": {
+              "label": "###"
+            },
+            "sw-color-warning": {
+              "label": "###"
+            },
+            "sw-color-info": {
+              "label": "###"
+            }
+          }
+        },
+        "typography": {
+          "label": "#",
+          "default": {
+            "sw-font-family-base": {
+              "label": "###"
+            },
+            "sw-text-color": {
+              "label": "###"
+            },
+            "sw-font-family-headline": {
+              "label": "###"
+            },
+            "sw-headline-color": {
+              "label": "###"
+            }
+          }
+        },
+        "eCommerce": {
+          "label": "#",
+          "default": {
+            "sw-color-price": {
+              "label": "###"
+            },
+            "sw-color-buy-button": {
+              "label": "###"
+            },
+            "sw-color-buy-button-text": {
+              "label": "###"
+            }
+          }
+        },
+        "media": {
+          "label": "#",
+          "default": {
+            "sw-logo-desktop": {
+              "label": "###"
+            },
+            "sw-logo-tablet": {
+              "label": "###"
+            },
+            "sw-logo-mobile": {
+              "label": "###"
+            },
+            "sw-logo-share": {
+              "label": "###"
+            },
+            "sw-logo-favicon": {
+              "label": "###"
+            }
+          }
+        }
+      }
+    }
+  },
   "sw-theme-manager": {
     "general": {
       "mainMenuItemGeneral": "Themes",
