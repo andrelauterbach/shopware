@@ -1,0 +1,9 @@
+{
+    "sw-settings-measurement": {
+        "general": {
+            "mainMenuItemGeneral": "Measurement system",
+            "description": "Change measurement here.",
+            "textHeadline": "Measurement system"
+        }
+    }
+}

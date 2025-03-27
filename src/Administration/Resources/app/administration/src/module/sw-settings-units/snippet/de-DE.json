@@ -7,7 +7,7 @@
       }
     },
     "general": {
-      "mainMenuItemGeneral": "Maßeinheiten",
+      "mainMenuItemGeneral": "Product units",
       "placeholderSearchBar": "Durchsuche alle Maßeinheiten ...",
       "createNewUnit": "Maßeinheit erstellen",
       "disableAddNewUnitMessage": "Neue Maßeinheiten können nur in der System-Standardsprache angelegt werden."

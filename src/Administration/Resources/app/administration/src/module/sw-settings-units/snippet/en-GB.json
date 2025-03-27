@@ -7,7 +7,7 @@
       }
     },
     "general": {
-      "mainMenuItemGeneral": "Scale units",
+      "mainMenuItemGeneral": "Product units",
       "placeholderSearchBar": "Search scale units...",
       "createNewUnit": "Add scale unit",
       "disableAddNewUnitMessage": "New scale units can only be added in the system default language."

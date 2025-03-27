@@ -1,0 +1,16 @@
+.sw-settings-measurement-banner {
+    &.mt-card {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    &.mt-card .mt-card__content {
+        padding: 0;
+    }
+
+    &.mt-card .mt-banner {
+        margin-bottom: 0;
+    }
+}

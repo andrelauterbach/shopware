@@ -1,0 +1,30 @@
+<mt-card
+    title="Measurement"
+    position-identifier="sw-settings-measurement-base"
+>
+    <p>The defaults are only affecting the UI of the administration. The units shown for your customers are handled via the Sales Channel settings.</p>
+    <br>
+    <sw-container
+        columns="1fr 1fr 1fr"
+        gap="0px 30px"
+    >
+        <mt-select
+            v-model="unitSystem"
+            hide-clearable-button
+            label="Unit system"
+            :options="unitSystemOptions"
+        />
+        <mt-select
+            v-model="dimensionUnit"
+            hide-clearable-button
+            label="Dimension unit"
+            :options="dimensionUnitOptions"
+        />
+        <mt-select
+            v-model="weightUnit"
+            hide-clearable-button
+            label="Weight unit"
+            :options="weightUnitOptions"
+        />
+    </sw-container>
+</mt-card>
