@@ -111,6 +111,7 @@ class SetPaymentOrderRoute extends AbstractSetPaymentOrderRoute
         $transactionId = Uuid::randomHex();
         $payload = [
             'id' => $order->getId(),
+            'primaryOrderTransactionId' => $transactionId,
             'transactions' => [
                 [
                     'id' => $transactionId,
