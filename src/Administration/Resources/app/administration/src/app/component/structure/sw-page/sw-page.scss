@@ -185,4 +185,8 @@ $sw-page-search-bar-z-index: $z-index-sw-page-search-bar;
     .sw-page__side-content {
         border-right: 1px solid $sw-page-separator-color;
     }
+
+    .sw-page__sidebar-icon-active{
+        color: $color-shopware-brand-500;
+    }
 }

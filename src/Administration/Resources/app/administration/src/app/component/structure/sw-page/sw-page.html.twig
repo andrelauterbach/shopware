@@ -32,6 +32,18 @@
             {% endblock %}
 
             <sw-help-center-v2 />
+
+            <template
+                v-for="sidebar in sidebars"
+                :key="sidebar.title"
+            >
+                <mt-icon
+                    :name="sidebar.icon"
+                    :size="20"
+                    :class="{ 'sw-page__sidebar-icon-active': sidebar.active }"
+                    @click="setActiveSidebar(sidebar.locationId)"
+                />
+            </template>
         </div>
         {% endblock %}
         {% endblock %}

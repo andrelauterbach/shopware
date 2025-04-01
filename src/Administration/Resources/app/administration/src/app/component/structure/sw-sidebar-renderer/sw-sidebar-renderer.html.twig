@@ -1,0 +1,12 @@
+<aside
+    v-if="activeSidebar"
+    class="sw-sidebar-renderer"
+>
+    <section>
+        <sw-iframe-renderer
+            :src="activeSidebar.baseUrl"
+            :location-id="activeSidebar.locationId"
+            :full-screen="false"
+        />
+    </section>
+</aside>
