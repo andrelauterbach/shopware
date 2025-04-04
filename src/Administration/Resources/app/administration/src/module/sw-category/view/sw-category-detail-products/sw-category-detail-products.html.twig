@@ -6,6 +6,7 @@
         v-if="category.type !== 'folder'"
         :title="$tc('sw-category.base.products.productAssignmentHeadline')"
         :entity-collection="category.products"
+        :display-variants="true"
         :columns="productColumns"
         :is-loading="isLoading"
         :disabled="!acl.can('category.editor')"
