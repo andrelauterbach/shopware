@@ -157,6 +157,13 @@ async function createWrapper(
 describe('module/sw-settings/page/sw-settings-index', () => {
     beforeEach(async () => {
         Shopware.Store.get('settingsItems').settingsGroups = {};
+        // Clear localStorage before each test
+        localStorage.clear();
+    });
+
+    afterEach(() => {
+        // Clear localStorage after each test
+        localStorage.clear();
     });
 
     it('should be a Vue.js component', async () => {
@@ -349,5 +356,62 @@ describe('module/sw-settings/page/sw-settings-index', () => {
 
         const barSetting = shopGroup.find((setting) => setting.id === 'sw-settings-bar');
         expect(barSetting).toBeDefined();
+    });
+
+    it('should show banner by default when no localStorage value is set', async () => {
+        const wrapper = await createWrapper();
+        await flushPromises();
+
+        expect(wrapper.vm.isUnitBannerVisible).toBe(true);
+        expect(wrapper.find('.sw-settings__content-unit-banner').exists()).toBe(true);
+    });
+
+    it('should hide banner when localStorage value is false', async () => {
+        localStorage.setItem('sw-settings-unit-banner-visibility', 'false');
+        const wrapper = await createWrapper();
+        await flushPromises();
+
+        expect(wrapper.vm.isUnitBannerVisible).toBe(false);
+        expect(wrapper.find('.sw-settings__content-unit-banner').exists()).toBe(false);
+    });
+
+    it('should hide banner when close button is clicked', async () => {
+        const wrapper = await createWrapper();
+        await flushPromises();
+
+        // Initially visible
+        expect(wrapper.vm.isUnitBannerVisible).toBe(true);
+        expect(wrapper.find('.sw-settings__content-unit-banner').exists()).toBe(true);
+
+        // Close the banner
+        await wrapper.vm.onCloseUnitBanner();
+
+        // Should be hidden
+        expect(wrapper.vm.isUnitBannerVisible).toBe(false);
+        expect(wrapper.find('.sw-settings__content-unit-banner').exists()).toBe(false);
+        expect(localStorage.getItem('sw-settings-unit-banner-visibility')).toBe('false');
+    });
+
+    it('should handle localStorage errors', async () => {
+        // Mock localStorage to throw an error
+        const originalLocalStorage = global.localStorage;
+        global.localStorage = {
+            getItem: () => {
+                throw new Error('Test error');
+            },
+            setItem: () => {
+                throw new Error('Test error');
+            },
+        };
+
+        const wrapper = await createWrapper();
+        await flushPromises();
+
+        // Should use default value when localStorage fails
+        expect(wrapper.vm.isUnitBannerVisible).toBe(true);
+        expect(wrapper.find('.sw-settings__content-unit-banner').exists()).toBe(true);
+
+        // Restore original localStorage
+        global.localStorage = originalLocalStorage;
     });
 });

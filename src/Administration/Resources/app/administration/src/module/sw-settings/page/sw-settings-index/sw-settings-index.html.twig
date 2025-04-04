@@ -19,6 +19,20 @@
                 </h1>
                 {% endblock %}
 
+                {# @deprecated tag:v6.8.0 - Block will be removed without replacement #}
+                {% block sw_settings_content_card_view_banner_info %}
+                <mt-banner
+                    v-if="isUnitBannerVisible"
+                    class="sw-settings__content-unit-banner"
+                    variant="info"
+                    closable
+                    @close="onCloseUnitBanner"
+                >
+                    <p v-html="$t('sw-settings.index.textSettingUnitInfo')">
+                    </p>
+                </mt-banner>
+                {% endblock %}
+
                 {% block sw_settings_content_card_content_grid %}
                 <div
                     class="sw-settings__content-grid"

@@ -15,6 +15,30 @@ export default {
         'feature',
     ],
 
+    emits: ['close'],
+
+    data() {
+        return {
+            /**
+             * @deprecated tag:v6.8.0 - Will be removed without replacement
+             */
+            isUnitBannerVisible: true,
+        };
+    },
+
+    /**
+     * @deprecated tag:v6.8.0 - Will be removed without replacement
+     */
+    created() {
+        try {
+            const storedValue = localStorage.getItem('sw-settings-unit-banner-visibility');
+            this.isUnitBannerVisible = storedValue === null || storedValue !== 'false';
+        } catch (error) {
+            // If localStorage is not available, keep the default value
+            console.error('Could not access localStorage:', error);
+        }
+    },
+
     metaInfo() {
         return {
             title: this.$createTitle(),
@@ -110,6 +134,18 @@ export default {
         getGroupLabel(settingsGroup) {
             const upper = settingsGroup.charAt(0).toUpperCase() + settingsGroup.slice(1);
             return this.$tc(`sw-settings.index.tab${upper}`);
+        },
+
+        /**
+         * @deprecated tag:v6.8.0 - Will be removed without replacement
+         */
+        onCloseUnitBanner() {
+            this.isUnitBannerVisible = false;
+            try {
+                localStorage.setItem('sw-settings-unit-banner-visibility', 'false');
+            } catch (error) {
+                console.error('Could not save to localStorage:', error);
+            }
         },
     },
 };
