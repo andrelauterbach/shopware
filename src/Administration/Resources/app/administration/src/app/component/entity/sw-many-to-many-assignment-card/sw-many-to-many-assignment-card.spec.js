@@ -38,6 +38,7 @@ async function createWrapper(customPropsData = {}) {
                     'sw-select-result': true,
                     'sw-select-result-list': true,
                     'sw-pagination': true,
+                    'sw-product-variant-info': true,
                 },
                 provide: {
                     repositoryFactory: {},
@@ -58,6 +59,7 @@ describe('src/app/component/entity/sw-many-to-many-assignment-card', () => {
         const wrapper = await createWrapper();
 
         const selectBase = wrapper.find('.sw-select-base');
+
 
         expect(selectBase.attributes().disabled).toBeUndefined();
     });
