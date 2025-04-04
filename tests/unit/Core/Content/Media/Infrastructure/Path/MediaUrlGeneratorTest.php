@@ -12,6 +12,7 @@ use Shopware\Core\Content\Media\Core\Params\UrlParams;
 use Shopware\Core\Content\Media\Core\Params\UrlParamsSource;
 use Shopware\Core\Content\Media\Infrastructure\Path\MediaUrlGenerator;
 use Shopware\Core\Content\Media\MediaException;
+use Shopware\Core\Framework\Feature;
 
 /**
  * @internal
@@ -65,7 +66,9 @@ class MediaUrlGeneratorTest extends TestCase
 
         yield 'Test with whitespaces in path' => [
             new UrlParams('id', UrlParamsSource::MEDIA, 'media/foo/3a/test file.jpg', null),
-            'http://localhost:8000/media/foo/3a/test%20file.jpg',
+            Feature::isActive('v6.8.0.0')
+                ? 'http://localhost:8000/media/foo/3a/test%20file.jpg'
+                : 'http://localhost:8000/media/foo/3a/test file.jpg',
         ];
     }
 }
