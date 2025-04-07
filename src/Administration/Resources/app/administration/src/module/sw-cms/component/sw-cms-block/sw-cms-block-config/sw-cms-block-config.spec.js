@@ -6,6 +6,7 @@ import 'src/module/sw-cms/mixin/sw-cms-state.mixin';
 import { setupCmsEnvironment } from 'src/module/sw-cms/test-utils';
 
 const block = {
+    id: 'blockId',
     name: 'Block name',
     type: 'text',
     backgroundColor: '',
@@ -67,7 +68,6 @@ async function createWrapper() {
                     'sw-contextual-field': await wrapTestComponent('sw-contextual-field'),
                     'sw-block-field': await wrapTestComponent('sw-block-field'),
                     'sw-field-error': true,
-                    'sw-icon': true,
                     'sw-media-compact-upload-v2': true,
                     'sw-upload-listener': true,
                     'sw-select-field': true,

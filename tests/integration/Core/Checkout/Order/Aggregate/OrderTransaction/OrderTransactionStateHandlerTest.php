@@ -8,9 +8,12 @@ use Shopware\Core\Checkout\Cart\Price\Struct\CalculatedPrice;
 use Shopware\Core\Checkout\Cart\Price\Struct\CartPrice;
 use Shopware\Core\Checkout\Cart\Tax\Struct\CalculatedTaxCollection;
 use Shopware\Core\Checkout\Cart\Tax\Struct\TaxRuleCollection;
+use Shopware\Core\Checkout\Customer\CustomerCollection;
+use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionCollection;
 use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionEntity;
 use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionStateHandler;
 use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionStates;
+use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Order\OrderStates;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
@@ -31,10 +34,19 @@ class OrderTransactionStateHandlerTest extends TestCase
 {
     use IntegrationTestBehaviour;
 
+    /**
+     * @var EntityRepository<CustomerCollection>
+     */
     private EntityRepository $customerRepository;
 
+    /**
+     * @var EntityRepository<OrderCollection>
+     */
     private EntityRepository $orderRepository;
 
+    /**
+     * @var EntityRepository<OrderTransactionCollection>
+     */
     private EntityRepository $orderTransactionRepository;
 
     private OrderTransactionStateHandler $orderTransactionStateHelper;
@@ -73,7 +85,7 @@ class OrderTransactionStateHandlerTest extends TestCase
                 'refund' => OrderTransactionStates::STATE_REFUNDED,
             ]],
             'Partially pay & Refund' => [[
-                'payPartially' => OrderTransactionStates::STATE_PARTIALLY_PAID,
+                'paidPartially' => OrderTransactionStates::STATE_PARTIALLY_PAID,
                 'refund' => OrderTransactionStates::STATE_REFUNDED,
             ]],
             'Pay & Partially Refund' => [[
@@ -86,7 +98,7 @@ class OrderTransactionStateHandlerTest extends TestCase
                 'fail' => OrderTransactionStates::STATE_FAILED,
             ]],
             'Partially Pay & Process & Pay' => [[
-                'payPartially' => OrderTransactionStates::STATE_PARTIALLY_PAID,
+                'paidPartially' => OrderTransactionStates::STATE_PARTIALLY_PAID,
                 'processUnconfirmed' => OrderTransactionStates::STATE_UNCONFIRMED,
                 'paid' => OrderTransactionStates::STATE_PAID,
             ]],
@@ -94,6 +106,14 @@ class OrderTransactionStateHandlerTest extends TestCase
                 'paid' => OrderTransactionStates::STATE_PAID,
                 'chargeback' => OrderTransactionStates::STATE_CHARGEBACK,
                 'cancel' => OrderTransactionStates::STATE_CANCELLED,
+            ]],
+            'Partially Pay & Pay' => [[
+                'paidPartially' => OrderTransactionStates::STATE_PARTIALLY_PAID,
+                'paid' => OrderTransactionStates::STATE_PAID,
+            ]],
+            'Remind & Pay' => [[
+                'remind' => OrderTransactionStates::STATE_REMINDED,
+                'paid' => OrderTransactionStates::STATE_PAID,
             ]],
         ];
     }

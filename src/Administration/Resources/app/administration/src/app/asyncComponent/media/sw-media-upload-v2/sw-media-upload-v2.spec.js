@@ -13,7 +13,6 @@ async function createWrapper(customOptions = {}) {
     };
 
     return mount(await wrapTestComponent('sw-media-upload-v2', { sync: true }), {
-        attachTo: document.body,
         props: {
             uploadTag: 'my-upload',
             addFilesOnMultiselect: true,
@@ -24,9 +23,6 @@ async function createWrapper(customOptions = {}) {
                 droppable: {},
             },
             stubs: {
-                'sw-icon': {
-                    template: '<div class="sw-icon" @click="$emit(\'click\')"></div>',
-                },
                 'sw-context-button': await wrapTestComponent('sw-context-button'),
                 'sw-button-group': await wrapTestComponent('sw-button-group'),
                 'sw-context-menu-item': await wrapTestComponent('sw-context-menu-item'),
@@ -242,9 +238,6 @@ describe('src/app/component/media/sw-media-upload-v2', () => {
                     },
                     stubs: {
                         'sw-media-upload-v2': await wrapTestComponent('sw-media-upload-v2'),
-                        'sw-icon': {
-                            template: '<div class="sw-icon" @click="$emit(\'click\')"></div>',
-                        },
                         'sw-context-button': await wrapTestComponent('sw-context-button'),
                         'sw-button-group': await wrapTestComponent('sw-button-group'),
                         'sw-context-menu-item': await wrapTestComponent('sw-context-menu-item'),
@@ -312,9 +305,6 @@ describe('src/app/component/media/sw-media-upload-v2', () => {
                     },
                     stubs: {
                         'sw-media-upload-v2': await wrapTestComponent('sw-media-upload-v2'),
-                        'sw-icon': {
-                            template: '<div class="sw-icon" @click="$emit(\'click\')"></div>',
-                        },
                         'sw-context-button': await wrapTestComponent('sw-context-button'),
                         'sw-button-group': await wrapTestComponent('sw-button-group'),
                         'sw-context-menu-item': await wrapTestComponent('sw-context-menu-item'),
@@ -598,9 +588,8 @@ describe('src/app/component/media/sw-media-upload-v2', () => {
         await flushPromises();
 
         // enable uploads via url
-        const contextMenuItem = document.body.querySelector('.sw-media-upload-v2__button-url-upload');
-        expect(contextMenuItem).toBeInstanceOf(HTMLElement);
-        contextMenuItem.click();
+        const contextMenuItem = wrapper.find('.sw-media-upload-v2__button-url-upload');
+        await contextMenuItem.trigger('click');
         await flushPromises();
 
         const urlInput = wrapper.find('#sw-field--url');

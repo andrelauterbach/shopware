@@ -304,6 +304,10 @@ export default {
         this.createdComponent();
     },
 
+    beforeRouteLeave() {
+        Shopware.Store.get('shopwareApps').selectedIds = [];
+    },
+
     beforeUnmount() {
         this.beforeDestroyedComponent();
     },
@@ -494,7 +498,7 @@ export default {
 
             return this.salesChannelRepository.search(new Criteria(1, 25)).then((response) => {
                 this.salesChannels = response;
-                const isSystemDefaultLanguage = Shopware.Store.get('context').isSystemDefaultLanguage();
+                const isSystemDefaultLanguage = Shopware.Store.get('context').isSystemDefaultLanguage;
                 this.cmsPageState.setIsSystemDefaultLanguage(isSystemDefaultLanguage);
                 return this.loadPage(this.pageId);
             });

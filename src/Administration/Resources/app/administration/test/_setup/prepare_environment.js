@@ -37,7 +37,8 @@ import {
     MtTabs,
     MtTextField,
     MtTextarea,
-    MtToast, MtTextEditor,
+    MtToast,
+    MtTextEditor,
 } from '@shopware-ag/meteor-component-library';
 import {createI18n} from "vue-i18n";
 import aclService from './_mocks_/acl.service.mock';
@@ -46,8 +47,10 @@ import repositoryFactory from './_mocks_/repositoryFactory.service.mock';
 import flushPromises from '../_helper_/flushPromises';
 import wrapTestComponent from '../_helper_/componentWrapper';
 import 'blob-polyfill';
-import { sendTimeoutExpired } from '../_helper_/allowedErrors';
+import { sendTimeoutExpired, deprecatedTabComponent, deprecatedPopoverComponent } from '../_helper_/allowedErrors';
 import findByText from '../_helper_/find-by-text';
+import findByLabel from '../_helper_/find-by-label';
+import findByPlaceholder from '../_helper_/find-by-placeholder';
 
 // initialize the Stores
 import '../../src/module/sw-cms/store/cms-page.store';
@@ -76,6 +79,7 @@ import '../../src/app/store/notification.store';
 import '../../src/app/store/tabs.store';
 import '../../src/app/store/usage-data.store';
 import '../../src/app/store/session.store';
+import '../../src/app/store/sw-bulk-edit.store';
 import '../../src/module/sw-category/page/sw-category-detail/store';
 import '../../src/module/sw-extension/store/extensions.store';
 import '../../src/module/sw-order/store/order-detail.store';
@@ -86,7 +90,6 @@ import '../../src/module/sw-product/page/sw-product-detail/store';
 import '../../src/module/sw-profile/store/sw-profile.store';
 import '../../src/module/sw-promotion-v2/page/sw-promotion-v2-detail/store';
 import '../../src/module/sw-flow/store/flow.store';
-import '../../src/module/sw-bulk-edit/store/sw-bulk-edit.store';
 import findByAriaLabel from '../_helper_/find-by-aria-label';
 
 // Setup Vue Test Utils configuration
@@ -102,6 +105,10 @@ config.plugins.VueWrapper.install((wrapper) => {
     wrapper.findByText = (selector, text) => findByText(wrapper, selector, text);
     // add `findByAriaLabel` to the global config
     wrapper.findByAriaLabel = (selector, text) => findByAriaLabel(wrapper, selector, text);
+    // add `findByLabel` to the global config
+    wrapper.findByLabel = (text) => findByLabel(wrapper, text);
+    // add `findByPlaceholder` to the global config
+    wrapper.findByPlaceholder = (text) => findByPlaceholder(wrapper, text);
 });
 
 // enable autoUnmount for wrapper after each test
@@ -210,6 +217,9 @@ config.global.stubs = {
             </slot>
         </div>
     `,
+    },
+    'mt-popover-deprecated': {
+        template: `<div class="mt-popover-deprecated"><slot/></div>`
     },
     'mt-banner': MtBanner,
     'mt-button': MtButton,
@@ -398,6 +408,8 @@ global.allowedErrors = [
     },
 
     sendTimeoutExpired,
+    deprecatedTabComponent,
+    deprecatedPopoverComponent,
 ];
 
 global.flushPromises = flushPromises;

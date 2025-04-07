@@ -1,7 +1,6 @@
 import template from './sw-bulk-edit-product.html.twig';
 import './sw-bulk-edit-product.scss';
 import '../../../sw-product/page/sw-product-detail/store';
-import '../../store/sw-bulk-edit.store';
 
 const { Context } = Shopware;
 const { Criteria } = Shopware.Data;
@@ -70,7 +69,7 @@ export default {
         },
 
         selectedIds() {
-            return Shopware.Store.get('shopwareApps').selectedIds;
+            return Shopware.Store.get('swBulkEdit').selectedIds;
         },
 
         customFieldSetRepository() {
@@ -359,7 +358,7 @@ export default {
                     type: 'int',
                     canInherit: false,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.deliverability.stock.changeLabel'),
                         placeholder: this.$tc('sw-bulk-edit.product.deliverability.stock.placeholderStock'),
                         numberType: 'int',
@@ -396,7 +395,7 @@ export default {
                     type: 'int',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.deliverability.restockTime.changeLabel'),
                         placeholder: this.$tc('sw-bulk-edit.product.deliverability.restockTime.placeholderRestockTime'),
                         numberType: 'int',
@@ -423,7 +422,7 @@ export default {
                     type: 'int',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.deliverability.minOrderQuantity.changeLabel'),
                         placeholder: this.$tc(
                             'sw-bulk-edit.product.deliverability.minOrderQuantity.placeholderMinOrderQuantity',
@@ -441,7 +440,7 @@ export default {
                     type: 'int',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.deliverability.purchaseSteps.changeLabel'),
                         placeholder: this.$tc('sw-bulk-edit.product.deliverability.purchaseSteps.placeholderPurchaseSteps'),
                         numberType: 'int',
@@ -457,7 +456,7 @@ export default {
                     type: 'int',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.deliverability.maxOrderQuantity.changeLabel'),
                         placeholder: this.$tc(
                             'sw-bulk-edit.product.deliverability.maxOrderQuantity.placeholderMaxOrderQuantity',
@@ -624,7 +623,7 @@ export default {
                     type: 'float',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.measuresAndPackaging.widthTitle.changeLabel'),
                         placeholder: this.$tc('sw-bulk-edit.product.measuresAndPackaging.widthTitle.placeholder'),
                         numberType: 'float',
@@ -638,7 +637,7 @@ export default {
                     type: 'float',
                     canInherit: this.isChild,
                     config: {
-                        componentName: 'sw-number-field',
+                        componentName: 'mt-number-field',
                         changeLabel: this.$tc('sw-bulk-edit.product.measuresAndPackaging.heightTitle.changeLabel'),
                         placeholder: this.$tc('sw-bulk-edit.product.measuresAndPackaging.heightTitle.placeholder'),
                         numberType: 'float',
@@ -1379,7 +1378,7 @@ export default {
                 return;
             }
 
-            this.$set(this.product, item.name, parentProductFrozen[item.name]);
+            this.product[item.name] = parentProductFrozen[item.name];
         },
 
         onInheritanceRemove(item) {
